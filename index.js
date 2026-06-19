@@ -11,8 +11,16 @@ const passport = require("passport");
 const LocalStartegy = require("passport-local");
 const User = require("./models/user.js");
 const ExpressError =  require("./utils/ExpressError.js");
-const mongoUrl = process.env.MONGODB;
+const mongoUrl = process.env.MONGODB || process.env.MONGODB_URI || process.env.MONGO_URI;
 const {MongoStore} = require('connect-mongo');
+
+if (!mongoUrl) {
+    throw new Error("MongoDB connection string is missing. Set MONGODB in Render's Environment settings.");
+}
+
+if (!process.env.SECRETCODE) {
+    throw new Error("Session secret is missing. Set SECRETCODE in Render's Environment settings.");
+}
 
 const store = MongoStore.create({
     mongoUrl:mongoUrl,
@@ -60,12 +68,6 @@ app.use(methodOverride("_method"));
 //ejs mate 
 const ejsmate = require("ejs-mate");
 app.engine("ejs",ejsmate );
-
-//mongo db connection building
-if (!mongoUrl) {
-    throw new Error("MONGODB is missing in .env");
-}
-
 
 app.use((req,res,next)=>{
     res.locals.user = req.user;
