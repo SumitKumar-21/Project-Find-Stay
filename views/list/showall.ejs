@@ -81,10 +81,10 @@ agriculture
  
 
   <div class="d-flex border border-1 rounded-3 px-1 border-dark shadow-sm" style="overflow: hidden;">
-<div class="d-flex align-items-center bg-white rounded-4 shadow-sm px-3 py-1">
+<!-- <div class="d-flex align-items-center bg-white rounded-4 shadow-sm px-3 py-1"> -->
 
  <a href="https://www.trip.com/flights/" target="_blank" class="text-reset text-decoration-none">
- <div class="text-center me-5 category" style="cursor:pointer; transition:.3s;">
+ <div class="text-center me-5 category ms-2" style="cursor:pointer; transition:.3s;">
         <span class="material-symbols-rounded fs-4 text-primary bg-light rounded-circle p-2 shadow-sm ">
             flight
         </span>
@@ -101,7 +101,7 @@ agriculture
    </a>
     
   <a href="https://www.uber.com/in/en/ride/ubertaxi/?from_challenge=1" target="_blank" class="text-decoration-none text-reset">
- <div class="text-center category me-2" style="cursor:pointer; transition:.3s;">
+ <div class="text-center category me-2 " style="cursor:pointer; transition:.3s;">
         <span class="material-symbols-rounded fs-4 text-warning bg-light rounded-circle p-2 shadow-sm">
             local_taxi
         </span>
@@ -109,36 +109,43 @@ agriculture
     </div>
   </a>
     </div>
-  </div>
+  <!-- </div> -->
 </div>
-<% if (categoryName) { %>
+<% if (list.length===0 && (search || categoryName) ) { %>
+  <div class="d-flex justify-content-center align-items-center text-center" style="min-height: 60vh;" > <h1 >Sorry No Result found</h1></div>
+<% } else if (categoryName || search) { %>
   <h1>Popular Choices</h1>
 <% } else { %>
   <h1>Trending</h1>
 <% } %>
+
       
           
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
-        <% list.forEach(function (l){%>
-     <main class="p-3 m-0 border-0 bd-example m-0 border-0" id="singelCard">
-        <a href="/showall/<%=l.id%>" class="showOne">
-    <div class="card" style="width: 22rem;">
-  <div class="card position-relative" style="width: 22rem;">
-  <img src="<%= l.Image.url %>" 
-       class="card-img-top" 
-       alt="<%= l.title %>" 
-       style="height: 18rem;">
-  <!-- Icon overlay -->
-     <i class="fa-regular fa-heart bg-transparent  mt-2 offset-10 text-red  position-absolute"></i>
+  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
+  <% list.forEach(function (l) { %>
+    <div class="col">
+      <a href="/showall/<%= l.id %>" class="showOne text-decoration-none text-dark">
+        <div class="listing-card">
+          <div class="listing-img-box">
+            <img
+              src="<%= l.Image.url %>"
+              class="listing-img"
+              alt="<%= l.title %>"
+            >
+          </div>
+          <div class="listing-body">
+            <h5 class="listing-title"><%= l.title %></h5>
+            <p class="listing-location"><%= l.location %>, <%= l.country %></p>
+            <p class="listing-price">
+              &#x20B9; <%= l.price.toLocaleString("en-IN") %>
+              <span>per night</span>
+            </p>
+          </div>
+        </div>
+      </a>
+    </div>
+  <% }); %>
 </div>
-
-     <h5 class="card-title"> <%= l.title%></h5>
-    <p class="card-p">&#x20B9 <%= l.price %> per night</p>
-    </div>
-     </a>
-  </main>
-<% });%>
-    </div>
   
 
  

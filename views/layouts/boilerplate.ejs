@@ -26,6 +26,16 @@
 </head>
 <body>
    <%- include('../includes/navbar.ejs') %>
+   <script>
+  setTimeout(() => {
+    const alerts = document.querySelectorAll(".flash-alert");
+
+    alerts.forEach((alert) => {
+      const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+      bsAlert.close();
+    });
+  }, 2000);
+</script>
 
     <div class="container">
          <%- include('../includes/alert.ejs') %>

@@ -11,8 +11,10 @@ const passport = require("passport");
 const LocalStartegy = require("passport-local");
 const User = require("./models/user.js");
 const ExpressError =  require("./utils/ExpressError.js");
+// const mongoUrl="mongodb://127.0.0.1:27017/pg"
 const mongoUrl =process.env.MONGODB;
 const {MongoStore} = require('connect-mongo');
+
 //session stroing it into  mongodb  cloud server  
 const store = MongoStore.create({
     mongoUrl:mongoUrl,

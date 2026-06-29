@@ -4,14 +4,22 @@ const mapUrl ="https://api.mapbox.com/search/geocode/v6/forward?q="
 
 //showall
 module.exports.showAll = async (req, res) => {
-  let { category } = req.query;
-  let categoryName= category;
-
-  const list = category
-    ? await Listing.find({ category })
-    : await Listing.find({});
-
-  res.render("list/showall.ejs", { list,categoryName});
+  let { category, search } = req.query;
+  let filter = {};
+  if (category) {
+    filter.category = category;
+  }
+  if (search) {
+    filter.$or = [
+      { title: { $regex: search, $options: "i" } },
+      { location: { $regex: search, $options: "i" } },
+      { country: { $regex: search, $options: "i" } },
+      {description:{$regex:search,$options:"i"}},
+    ];
+  }
+  const list = await Listing.find(filter);
+  console.log(list);
+  res.render("list/showall.ejs", {list,categoryName: category,search});
 };
 
 //logout
